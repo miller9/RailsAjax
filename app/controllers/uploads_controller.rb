@@ -3,6 +3,10 @@ class UploadsController < ApplicationController
   	@upload = Upload.new
   end
 
+  def index
+  	@upload = Upload.all
+  end
+
   def create
   	@upload = Upload.create(upload_params)
   	if @upload.save
@@ -15,7 +19,7 @@ class UploadsController < ApplicationController
   def destroy
   	@upload = Upload.find(params[:id])
   	if @upload.destroy
-  		render json: {message: "Imagen Eliminada"}
+  		redirect_to action: "index"
   	else
   		render json: {message: @upload.errors.full_messages.join(',')}
   	end
@@ -23,7 +27,7 @@ class UploadsController < ApplicationController
 
   private
   def upload_params
-  	params.require(:upload).permit(:image)
+  	params.permit(:image)
   end
 
 end
